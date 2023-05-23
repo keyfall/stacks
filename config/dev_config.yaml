@@ -1,0 +1,21 @@
+flask:
+  ENV: development
+  DEBUG: True
+  PROPAGATE_EXCEPTIONS: False
+
+log:
+  path: ./logs/
+  name: flask.log
+  # ERROR = 40, WARNING = 30, INFO = 20, DEBG = 10
+  level: 10
+
+postgresql:
+  host:
+  port: 5432
+  username: root
+  password: zongming
+  database: read
+
+whiteList:
+  ip: 127.0.0.1
+  path: /imsp-python/
