@@ -2,7 +2,7 @@ from flask import Flask
 from config import get_flask_config
 from utils import db as utils_db
 from utils import response as utils_response
-
+from utils.hooks import before_request_hooks, after_request_hooks
 
 def init_bp(app):
     from .Book import bp_book

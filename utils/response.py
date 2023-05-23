@@ -18,10 +18,11 @@ def jsonify_data(data):
         ret = data.strftime("%Y-%m-%d %H:%M:%S")
     elif isinstance(data, (int, float, str, bool)):
         pass
-    try:
-        ret = json.dumps(data)
-    except TypeError:
-        ret = str(data)
+    else:
+        try:
+            ret = json.dumps(data)
+        except TypeError:
+            ret = str(data)
     return ret
 
 

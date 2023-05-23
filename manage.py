@@ -1,5 +1,6 @@
 from apps import create_app
 
+#配置初始化
 app = create_app()
 
 if __name__ == '__main__':
