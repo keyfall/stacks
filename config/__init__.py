@@ -25,7 +25,7 @@ get_flask_config = config["flask"]
 get_log_config = config["log"]
 
 #postgre配置
-get_postgre_config = config["posgresql"]
+get_postgre_config = config["postgresql"]
 
 #白名单
 get_white_list = config["whiteList"]

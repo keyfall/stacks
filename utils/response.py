@@ -37,7 +37,7 @@ def errorhandler(app):
 
     @app.errorhandler(500)
     def handler_500(error):
-        return jsonify_response(data=APICODE.ERROR, msg=error if app.conf["ENV"] == "development" else 500)
+        return jsonify_response(data=APICODE.ERROR, msg=error if app.config["ENV"] == "development" else 500)
 
     @app.errorhandler(400)
     def handler_400(error):

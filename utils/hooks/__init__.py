@@ -16,7 +16,9 @@ def before_request_hooks(app):
         ip = request.remote_addr
         path = request.path
 
-        if ip not in white_ip_list or path not in white_ip_list:
+        print(path)
+        print(path not in white_path_list)
+        if ip not in white_ip_list or path not in white_path_list:
             return jsonify_response(code=APICODE.FORBIDDEN, msg="禁止访问")
 
 

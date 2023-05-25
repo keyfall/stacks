@@ -2,6 +2,9 @@ flask:
   ENV: development
   DEBUG: True
   PROPAGATE_EXCEPTIONS: False
+  JSON_AS_ASCII : False
+
+
 
 log:
   path: ./logs/
@@ -17,5 +20,5 @@ postgresql:
   database: read
 
 whiteList:
-  ip: 127.0.0.1
-  path: /imsp-python/
+  ip: 127.0.0.1, 192.168.211.158
+  path: /book/uu,/favicon.ico

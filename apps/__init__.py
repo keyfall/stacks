@@ -13,7 +13,7 @@ def create_app():
     app.config.from_mapping(get_flask_config)
 
     #初始化数据库
-    utils_db.init_db(app)
+    # utils_db.init_db(app)
 
     #初始化蓝图
     init_bp(app)
