@@ -7,15 +7,17 @@
 </head>
 <body>
 <style>
+    body{
+        display:flex;
+    }
     .transfer-book-container {
     min-height: 545px;
     background: #fff;
-    margin-top: 50px;
+    margin:auto;
 }
 .transfer-book-container .book-main{
     width: 800px;
     margin: 0 auto;
-    padding: 73px 200px 90px;
 }
 .transfer-book-container .book-main .transfer-book-title{
     font-size: 28px;
@@ -36,12 +38,11 @@
     border-radius: 2px;
     margin-top: 48px;
     text-align: center;
+    display:flex;
 }
 .transfer-book-container .book-main .change-book-title{
     font-size: 28px;
     font-weight: 400;
-    line-height: 48px;
-    padding-top: 50px;
     color: #666;
 }
 .transfer-book-container .book-main .change-book-btn{
@@ -52,14 +53,12 @@
     color: #fff;
     padding: 0 70px;
     background: #42a5f5;
-    margin-top: 40px;
+    margin-top: 20px;
     border-radius: 2px;
 }
 .transfer-book-container .book-main .book-uploading,.transfer-book-container .book-main .upload-success{
     font-size: 28px;
     font-weight: 400;
-    line-height: 48px;
-    padding-top: 50px;
     color: #666;
 }
 .transfer-book-container .book-main .preloader{
@@ -114,7 +113,10 @@
     line-height: 24px;
 }
 .hide{
-    display: none !important;
+    display: none;
+}
+.transfer-book-1,.transfer-book-3{
+    margin:auto
 }
 
 
@@ -127,10 +129,10 @@
             <div class="transfer-book-1">
                 <h3 class="change-book-title">选择图书</h3>
                 <a  href="javascript:;" onclick="choosebook()" class="change-book-btn">选择图书</a>
-                <input type="file" class="hide" id="change-book" accept=".epub, .txt, .pdf, .mobi, .azw, .azw3">
+                <input type="file" class="hide" id="change-book" name="book" accept=".epub, .txt, .pdf, .mobi, .azw, .azw3">
             </div>
             <div class="transfer-book-3 hide">
-                <h3 class="upload-success">文件上传成功，请在 APP 上提取</h3>
+                <p class="upload-success">文件上传成功，请在 APP 上提取</p>
             </div>
         </div>
     </div>
@@ -148,22 +150,28 @@
                 alert("请选择需要上传的文件");
                 return;
             }
+<!--    这里要新建FormData去装e.target.files[0]，如果直接在ajax里的data使用e.target.files[0]，后台收不到       -->
+    var formdata = new FormData()
+    formdata.append('file', e.target.files[0])
    $.ajax({
-    type: 'post',
-    url: "http://localhost:5000/upload_book", //上传文件的请求路径必须是绝对路劲
-     data: e.target.files[0],
+    type: "post",
+    url: "/book/upload_book", //上传文件的请求路径必须是绝对路劲
+     data: formdata,
      cache: false,
      processData: false,
      contentType: false,
-      }).success(function (data) {
-        console.log(data);
-        alert("上传成功"+data);
-        filename=data;
-      }).error(function () {
+     success: function(data){
+        console.log(data.code)
+        if(data.code==200){
+            $(".transfer-book-1").addClass('hide');
+            $(".transfer-book-3").removeClass('hide');
+            }
+      },
+      error: function () {
          alert("上传失败");
+     },
      });
-
-        });
+});
 </script>
 
 </body></html>

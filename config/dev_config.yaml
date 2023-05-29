@@ -3,8 +3,8 @@ flask:
   DEBUG: True
   PROPAGATE_EXCEPTIONS: False
   JSON_AS_ASCII : False
-
-
+  MAX_CONTENT_LENGTH : 20971520
+  UPLOAD_FOLDER : e:\projects\stacks\books
 
 log:
   path: ./logs/
