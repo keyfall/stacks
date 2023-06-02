@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 #配置初始化
 app = create_app()
-db = SQLAlchemy(app)
 
 
 

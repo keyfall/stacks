@@ -1,8 +1,9 @@
 from config import get_postgre_config as config
-# from psycopg_pool import NullConnectionPool
 from flask_sqlalchemy import SQLAlchemy
 
-def init_db(app):
-    db = SQLAlchemy(app)
+db:SQLAlchemy = None
 
+def init_db(app):
+    global db
+    db = SQLAlchemy(app)
     return db
