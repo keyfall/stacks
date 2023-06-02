@@ -1,20 +1,21 @@
 from flask import Flask
+
 from config import get_flask_config
 from utils import db as utils_db
 from utils import response as utils_response
 from utils.hooks import before_request_hooks, after_request_hooks
-from utils import login
+from utils.login import *
 def init_bp(app):
     from .Book import bp_book
+    from .User import bp_user
+
     app.register_blueprint(bp_book, url_prefix="/book")
+    app.register_blueprint(bp_user, url_prefix="/user")
 
 def create_app():
     app = Flask(__name__)
     app.config.from_mapping(get_flask_config)
-    #MAX_CONTENT_LENGTH这个不能在yaml文件里使用算数运算，会报类型错误，直接使用整数可以
-    # app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
-    #这句有没有都能上传过来
-    # app.config['UPLOAD_FOLDER'] = r'e:\projects\stacks\books'
+
     #初始化数据库
     # utils_db.init_db(app)
 
@@ -29,7 +30,7 @@ def create_app():
     after_request_hooks(app)
 
     # flask-login用户会话管理
-    login.login_manager.init_app(app)
+    login_manager.init_app(app)
 
     return app
 

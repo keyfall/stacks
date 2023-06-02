@@ -1,7 +1,10 @@
 from apps import create_app
+from flask_sqlalchemy import SQLAlchemy
 
 #配置初始化
 app = create_app()
+db = SQLAlchemy(app)
+
 
 
 if __name__ == '__main__':
