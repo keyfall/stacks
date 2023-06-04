@@ -4,7 +4,9 @@ from config import get_flask_config
 from utils import db as utils_db
 from utils import response as utils_response
 from utils.hooks import before_request_hooks, after_request_hooks
-from utils.login import login_manager
+from utils.login import *
+
+
 def init_bp(app):
     from .Book import bp_book
     from .User import bp_user
@@ -17,7 +19,7 @@ def create_app():
     app.config.from_mapping(get_flask_config)
 
     #初始化数据库
-    utils_db.init_db(app)
+    utils_db.db.init_app(app)
 
     #初始化蓝图
     init_bp(app)
