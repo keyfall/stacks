@@ -1,4 +1,4 @@
-from flask import render_template,request,flash
+from flask import render_template,request,flash,url_for,redirect
 import re
 
 from apps.Book import bp_book
@@ -30,7 +30,7 @@ def upload_book():
     if not is_valid_filename(file_val.filename):
          flash("错误的文件名称 '%s'".format(file_val.filename))
          # 这里不能使用jsonify，因为之前用的是ajax，所以使用flask无法显现，试试跳转和重定向，不行搜百度
-         return jsonify_response(code=400,msg="bad name")
+         return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(file_val.filename))
 
     dst = "d:\\projects\\stacks\\books\\"+file_val.filename
     file_val.save(dst)
