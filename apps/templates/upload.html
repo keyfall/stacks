@@ -1,123 +1,143 @@
-<html lang="en"><head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <title>在线传书 - Neat Reader 官网 - 全平台EPUB阅读器，轻松搞定EPUB怎么打开的难题</title>
     <meta name="keywords" content="epub,epub阅读器,在线epub阅读器,epub怎么打开,怎么打开epub,最好的epub阅读器">
-    <meta name="description" content="Neat Reader提供体验绝佳的epub阅读体验，无需安装，无需下载，即开即用，可以帮你轻松打开任何epub文件。也许，它就是地球上最好用的epub阅读器！">
+    <meta name="description"
+          content="Neat Reader提供体验绝佳的epub阅读体验，无需安装，无需下载，即开即用，可以帮你轻松打开任何epub文件。也许，它就是地球上最好用的epub阅读器！">
 
 </head>
 <body>
 <style>
-    body{
-        display:flex;
+    body {
+        display: flex;
     }
+
     .transfer-book-container {
-    min-height: 545px;
-    background: #fff;
-    margin:auto;
-}
-.transfer-book-container .book-main{
-    width: 800px;
-    margin: 0 auto;
-}
-.transfer-book-container .book-main .transfer-book-title{
-    font-size: 28px;
-    font-weight: 400;
-    color: #1e1e1e;
-    line-height: 42px;
-}
-.transfer-book-container .book-main .transfer-book-info{
-    padding-top: 8px;
-    font-size: 16px;
-    line-height: 32px;
-    color: #666;
-}
-.transfer-book-container .book-main .change-transfer-book{
-    height: 252px;
-    border: 1px solid #999;
-    background: #f2f2f2;
-    border-radius: 2px;
-    margin-top: 48px;
-    text-align: center;
-    display:flex;
-}
-.transfer-book-container .book-main .change-book-title{
-    font-size: 28px;
-    font-weight: 400;
-    color: #666;
-}
-.transfer-book-container .book-main .change-book-btn{
-    display: inline-block;
-    height: 48px;
-    line-height: 48px;
-    font-size: 20px;
-    color: #fff;
-    padding: 0 70px;
-    background: #42a5f5;
-    margin-top: 20px;
-    border-radius: 2px;
-}
-.transfer-book-container .book-main .book-uploading,.transfer-book-container .book-main .upload-success{
-    font-size: 28px;
-    font-weight: 400;
-    color: #666;
-}
-.transfer-book-container .book-main .preloader{
-    margin-top: 20px;
-}
-.transfer-book-container .book-main .upload-tips{
-    font-size: 14px;
-    line-height: 22px;
-    color: #666;
-    padding: 10px 0;
-}
-.transfer-book-container .book-main .accessCode{
-    display: block;
-    width: 224px;
-    height: 70px;
-    line-height: 70px;
-    text-align: center;
-    margin: 0 auto;
-    border: 2px solid #00BCD4;
-    margin-top: 10px;
-    font-size: 36px;
-    font-weight: bold;
-    color: #666;
-    border-radius: 2px;
-}
+        min-height: 545px;
+        background: #fff;
+        margin: auto;
+    }
 
-/*常见文件*/
+    .transfer-book-container .book-main {
+        width: 800px;
+        margin: 0 auto;
+    }
 
-.transfer-book-question .transfer-question{
-    width: 1200px;
-    margin: 0 auto;
-    padding: 56px 200px;
-}
-.transfer-book-question .transfer-question .question-title{
-    font-size: 16px;
-    line-height: 32px;
-    color: #1e1e1e;
-    margin-bottom: 10px;
-}
-.transfer-book-question .transfer-question .panel-group .panel{
-    background-color: #f2f2f2;
-}
-.transfer-book-question .transfer-question .panel-group .panel-title{
-    font-size: 16px;
-}
-.panel-group:not([data-collapse-color]) .panel-collapse .panel-heading.active .panel-title>a:after{
-    background: #F44336;
-}
-.transfer-book-question .transfer-question .panel-group .panel-body {
-    font-size: 14px;
-    color: #999;
-    line-height: 24px;
-}
-.hide{
-    display: none;
-}
-.transfer-book-1,.transfer-book-3{
-    margin:auto
-}
+    .transfer-book-container .book-main .transfer-book-title {
+        font-size: 28px;
+        font-weight: 400;
+        color: #1e1e1e;
+        line-height: 42px;
+    }
+
+    .transfer-book-container .book-main .transfer-book-info {
+        padding-top: 8px;
+        font-size: 16px;
+        line-height: 32px;
+        color: #666;
+    }
+
+    .transfer-book-container .book-main .change-transfer-book {
+        height: 252px;
+        border: 1px solid #999;
+        background: #f2f2f2;
+        border-radius: 2px;
+        margin-top: 48px;
+        text-align: center;
+        display: flex;
+    }
+
+    .transfer-book-container .book-main .change-book-title {
+        font-size: 28px;
+        font-weight: 400;
+        color: #666;
+    }
+
+    .transfer-book-container .book-main .change-book-btn {
+        display: inline-block;
+        height: 48px;
+        line-height: 48px;
+        font-size: 20px;
+        color: #fff;
+        padding: 0 70px;
+        background: #42a5f5;
+        margin-top: 20px;
+        border-radius: 2px;
+    }
+
+    .transfer-book-container .book-main .book-uploading, .transfer-book-container .book-main .upload-success {
+        font-size: 28px;
+        font-weight: 400;
+        color: #666;
+    }
+
+    .transfer-book-container .book-main .preloader {
+        margin-top: 20px;
+    }
+
+    .transfer-book-container .book-main .upload-tips {
+        font-size: 14px;
+        line-height: 22px;
+        color: #666;
+        padding: 10px 0;
+    }
+
+    .transfer-book-container .book-main .accessCode {
+        display: block;
+        width: 224px;
+        height: 70px;
+        line-height: 70px;
+        text-align: center;
+        margin: 0 auto;
+        border: 2px solid #00BCD4;
+        margin-top: 10px;
+        font-size: 36px;
+        font-weight: bold;
+        color: #666;
+        border-radius: 2px;
+    }
+
+    /*常见文件*/
+
+    .transfer-book-question .transfer-question {
+        width: 1200px;
+        margin: 0 auto;
+        padding: 56px 200px;
+    }
+
+    .transfer-book-question .transfer-question .question-title {
+        font-size: 16px;
+        line-height: 32px;
+        color: #1e1e1e;
+        margin-bottom: 10px;
+    }
+
+    .transfer-book-question .transfer-question .panel-group .panel {
+        background-color: #f2f2f2;
+    }
+
+    .transfer-book-question .transfer-question .panel-group .panel-title {
+        font-size: 16px;
+    }
+
+    .panel-group:not([data-collapse-color]) .panel-collapse .panel-heading.active .panel-title > a:after {
+        background: #F44336;
+    }
+
+    .transfer-book-question .transfer-question .panel-group .panel-body {
+        font-size: 14px;
+        color: #999;
+        line-height: 24px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .transfer-book-1, .transfer-book-3 {
+        margin: auto
+    }
 
 
 </style>
@@ -128,15 +148,24 @@
         <div class="change-transfer-book">
             <div class="transfer-book-1">
                 <h3 class="change-book-title">选择图书</h3>
-                <a  href="javascript:;" onclick="choosebook()" class="change-book-btn">选择图书</a>
-                <input type="file" class="hide" id="change-book" name="book" accept=".epub, .txt, .pdf, .mobi, .azw, .azw3">
+                <p>规范是 名称.类型,中间要带点</p>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <p style="color:red;">{{ message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                <a href="javascript:;" onclick="choosebook()" class="change-book-btn">选择图书</a>
+                <input type="file" class="hide" id="change-book" name="book">
             </div>
+
             <div class="transfer-book-3 hide">
                 <p class="upload-success">文件上传成功，请在 APP 上提取</p>
             </div>
         </div>
     </div>
-<div/>
+    <div/>
 </div>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
@@ -145,33 +174,35 @@
         $('#change-book').click();
 
     }
-        $('#change-book').change(function (e) {
-            if ($('#change-book').value == "") {
-                alert("请选择需要上传的文件");
-                return;
-            }
-<!--    这里要新建FormData去装e.target.files[0]，如果直接在ajax里的data使用e.target.files[0]，后台收不到       -->
-    var formdata = new FormData()
-    formdata.append('file', e.target.files[0])
-   $.ajax({
-    type: "post",
-    url: "/book/upload_book", //上传文件的请求路径必须是绝对路劲
-     data: formdata,
-     cache: false,
-     processData: false,
-     contentType: false,
-     success: function(data){
-        console.log(data.code)
-        if(data.code==200){
-            $(".transfer-book-1").addClass('hide');
-            $(".transfer-book-3").removeClass('hide');
-            }
-      },
-      error: function () {
-         alert("上传失败");
-     },
-     });
-});
+
+    $('#change-book').change(function (e) {
+        if ($('#change-book').value == "") {
+            alert("请选择需要上传的文件");
+            return;
+        }
+        <!--    这里要新建FormData去装e.target.files[0]，如果直接在ajax里的data使用e.target.files[0]，后台收不到       -->
+        var formdata = new FormData()
+        formdata.append('file', e.target.files[0])
+        $.ajax({
+            type: "post",
+            url: "/book/upload_book", //上传文件的请求路径必须是绝对路劲
+            data: formdata,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data.code)
+                if (data.code == 200) {
+                    $(".transfer-book-1").addClass('hide');
+                    $(".transfer-book-3").removeClass('hide');
+                }
+            },
+            error: function () {
+                alert("上传失败");
+            },
+        });
+    });
 </script>
 
-</body></html>
+</body>
+</html>
