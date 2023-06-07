@@ -3,9 +3,9 @@ from utils.db import db
 
 #配置初始化
 app = create_app()
-# db.drop_all()
+# db.drop_all(app=app)
 # with app.app_context():
-#     db.create_all()
+#     db.create_all(app=app)
 
 if __name__ == '__main__':
     #这里debug为true时会进行2次运行create_all

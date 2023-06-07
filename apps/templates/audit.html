@@ -1,0 +1,204 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+
+
+	<title>博客后台</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- The styles -->
+	<style type="text/css">
+	  body {
+		padding-bottom: 40px;
+	  }
+	  .sidebar-nav {
+		padding: 9px 0;
+	  }
+	</style>
+    <!-- 这里static可能找不到， 把static文件夹放到和后台生成Flask(__name__)同一个位置下(templates文件夹也是这样)-->
+    <link href="{{url_for('static', filename='css/bootstrap-cerulean.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/kudaompq.css')}}">
+    <link href="{{url_for('static', filename='css/bootstrap-responsive.css')}}" rel="stylesheet">
+	<link href="{{url_for('static', filename='css/charisma-app.css')}}" rel="stylesheet">
+	<link href="{{url_for('static', filename='css/jquery-ui-1.8.21.custom.css')}}" rel="stylesheet">
+	<link href="{{url_for('static', filename='css/fullcalendar.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/fullcalendar.print.css')}}" rel='stylesheet'  media='print'>
+	<link href="{{url_for('static', filename='css/chosen.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/uniform.default.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/colorbox.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/jquery.cleditor.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/jquery.noty.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/noty_theme_default.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/elfinder.min.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/elfinder.theme.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/jquery.iphone.toggle.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/opa-icons.css')}}" rel='stylesheet'>
+	<link href="{{url_for('static', filename='css/uploadify.css')}}" rel='stylesheet'>
+    <link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico')}}">
+	<script src="{{url_for('static', filename='js/jquery-1.7.2.min.js')}}"></script>
+
+</head>
+
+
+<body><div class="navbar">
+		<div class="navbar-inner">
+			<div class="container-fluid">
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".top-nav.nav-collapse,.sidebar-nav.nav-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</a>
+				<a class="brand" href="index.html"> <img alt="Charisma Logo" src="/apps/static/img/logo20.png"> <span>stacks</span></a>
+
+				<!-- user dropdown starts -->
+				<div class="btn-group pull-right">
+					<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+						<i class="icon-user"></i><span class="hidden-phone"> {{ uname }}</span>
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Profile</a></li>
+						<li class="divider"></li>
+						<li><a href="login.html">Logout</a></li>
+					</ul>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+
+	<!-- topbar ends -->
+		<div class="container-fluid">
+		<div class="row-fluid">
+			<!-- left menu starts -->
+			<div class="span2 main-menu-span">
+				<div class="well nav-collapse sidebar-nav">
+					<ul class="nav nav-tabs nav-stacked main-menu">
+						<li class="nav-header hidden-tablet">Main</li>
+						<li><a class="ajax-link" href="/book/backqueryall/1"><i class="icon-home"></i><span class="hidden-tablet"> 博客</span></a></li>
+						<li><a class="ajax-link" href="/sort/backqueryall/1"><i class="icon-eye-open"></i><span class="hidden-tablet"> 分类</span></a></li>
+						<li><a class="ajax-link" href="/tag/backqueryall/1"><i class="icon-edit"></i><span class="hidden-tablet"> 标签</span></a></li>
+					</ul>
+				</div><!--/.well -->
+			</div><!--/span-->
+			<!-- left menu ends -->
+
+
+
+
+
+
+
+<div id="content" class="span10" style="min-height:950px;">
+    <!-- content starts -->
+
+
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header well" data-original-title="">
+                <h2><i class="icon-user"></i>stacks</h2>
+                <h2 style="margin-left:20px"><a href="/book/create/">新建</a></h2>
+            </div>
+            <div class="box-content">
+                <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                    <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for book in books %}
+                    <tr>
+                        <td>{{book.book_name}}</td>
+                        <td class="center">{{book.create_time}}</td>
+                        <td class="center">
+{#                            <a class="btn btn-info" href="{{url_for('book.update',id=book.id)}}">#}
+{#                                <i class="icon-edit icon-white"></i>#}
+{#                                Edit#}
+{#                            </a>#}
+                            <a class="btn btn-danger" onclick="this.closest('tr').addClass('hide')" href="{{url_for('book.del_book',id=book.id)}}">
+                                <i class="icon-trash icon-white"></i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="dataTables_info" id="DataTables_Table_0_info">Showing 1 to
+
+							10
+
+							 of 15 entries</div>
+                    </div>
+{#                    <div class="span12 center">#}
+{#                        <div class="dataTables_paginate paging_bootstrap pagination">#}
+{#                            <ul>#}
+{#	                                            {% if pagination.has_prev %}#}
+{#                                <li class="prev disabled"><a href="{{url_for('book.pagination',page=pagination.prev_num)}}">← Previous</a></li>#}
+{#								{% endif %}#}
+{#								                            {% for i in pagination.iter_pages() %}#}
+{#                                <li class="active"><a href="{{url_for('book.pagination',page=i)}}">{{i}}</a></li>#}
+{#								{% endfor %}#}
+{#                                            {% if pagination.has_next %}#}
+{#                                <li class="next"><a href="{{url_for('book.pagination',page=pagination.next_num)}}">Next → </a></li>#}
+{#                                            {% endif %}#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                    </div>#}
+                </div>
+
+            </div>
+
+
+        </div><!--/span-->
+
+    </div><!--/row-->
+
+    <!-- content ends -->
+</div>
+
+
+
+
+
+<!--footer-->
+<div class="container footer" style="text-align: center;font-size: 21px;">
+    <div class="row">
+        <div class="col-sm-12 text-center margin-tb-large">
+            <p class="footer-copyright">©2022 - 2023 By Z-All.Keyfall</p>
+            <p class="footer-copyright">thanks for Kudaompq</p>
+        </div>
+    </div>
+</div>
+				<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+			<script>
+
+      tinymce.init({
+        selector: '#mytextarea',
+        plugins: [
+          'a11ychecker','advlist','advcode','advtable','autolink','checklist','export',
+          'lists','link','image','charmap','preview','anchor','searchreplace','visualblocks',
+          'powerpaste','fullscreen','formatpainter','insertdatetime','media','table','help','wordcount'
+        ],
+        toolbar: 'undo redo | formatpainter casechange blocks | bold italic backcolor | ' +
+          'alignleft aligncenter alignright alignjustify | ' +
+          'bullist numlist checklist outdent indent | removeformat | a11ycheck code table help'
+      });
+    </script>
+
+
+
+
+
+</div></div></body></html>

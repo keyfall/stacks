@@ -5,6 +5,7 @@ from apps.Book import bp_book
 from utils.response import jsonify_response
 from .book import Book
 from utils.db import db
+import datetime
 
 @bp_book.route('/uu', methods=['GET', 'POST'])
 def ss():
@@ -34,7 +35,23 @@ def upload_book():
 
     dst = "d:\\projects\\stacks\\books\\"+file_val.filename
     file_val.save(dst)
-    book = Book(book_name=file_val.filename.split(".")[0],book_url=dst)
+
+    book = Book(book_name=file_val.filename.split(".")[0],book_url=dst, create_time=datetime.date.today())
     db.session.add(book)
     #需要把信息存到数据库中
+    # db.session.commit()
     return jsonify_response(msg="ok")
+
+@bp_book.route('/dele/<int:id>', methods=['POST'])
+def del_book(id):
+    book = Book.get_or_404(id)
+    if book:
+        book.logic_delete = "1"
+        db.session.commit()
+        dst = book.book_url
+        try:
+            os.remove(dst)
+            print("File Deleted Successfully")
+        except OSError:
+            return jsonify_response(err=500, msg="File Not Found or Permission Denied")
+        return jsonify_response()

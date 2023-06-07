@@ -3,6 +3,7 @@ from flask import render_template, request, redirect
 from flask_login import login_user
 from utils.response import jsonify_response
 from .user import User
+from apps.Book.book import Book
 from utils.db import db
 
 @bp_user.route('/login', methods=["GET", "POST"])
@@ -26,7 +27,16 @@ def login():
 
     user = user_result
     login_user(user, remember=True)
-    return jsonify_response(msg="成功")
+
+    pagination = Book.query.filter_by(verify='0', logic_delete='0').paginate(1,10,error_out=False)
+    books = pagination.items
+    context = {
+        "books":books,
+        "uname":uname,
+        "pagination": pagination
+    }
+
+    return render_template("audit.html", **context)
 
 @bp_user.route('/create_user', methods=["GET", "POST"])
 def create():
