@@ -121,7 +121,7 @@
 {#                                <i class="icon-edit icon-white"></i>#}
 {#                                Edit#}
 {#                            </a>#}
-                            <a class="btn btn-danger" onclick="this.closest('tr').addClass('hide')" href="{{url_for('book.del_book',id=book.id)}}">
+                            <a class="btn btn-danger" onclick="del_book(this,{{ book.id }})" href="javascript:void(0);">
                                 <i class="icon-trash icon-white"></i>
                                 Delete
                             </a>
@@ -130,7 +130,29 @@
                     {% endfor %}
                     </tbody>
                 </table>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
+<script type="text/javascript">
+
+    function del_book(elem,id) {
+        $.ajax({
+            type: "get",
+            url: "/book/dele/"+id, //上传文件的请求路径必须是绝对路劲
+            success: function (data) {
+                console.log(data.code)
+                if (data.code == 200) {
+                    $(elem).closest('tr').addClass('hide')
+                }
+                if (data.code == 500) {
+                    alert("删除错误")
+                }
+            },
+            error: function () {
+                alert("请求失败");
+            },
+        });
+    };
+</script>
 
                 <div class="row-fluid">
                     <div class="span12">
@@ -140,21 +162,21 @@
 
 							 of 15 entries</div>
                     </div>
-{#                    <div class="span12 center">#}
-{#                        <div class="dataTables_paginate paging_bootstrap pagination">#}
-{#                            <ul>#}
-{#	                                            {% if pagination.has_prev %}#}
-{#                                <li class="prev disabled"><a href="{{url_for('book.pagination',page=pagination.prev_num)}}">← Previous</a></li>#}
-{#								{% endif %}#}
-{#								                            {% for i in pagination.iter_pages() %}#}
-{#                                <li class="active"><a href="{{url_for('book.pagination',page=i)}}">{{i}}</a></li>#}
-{#								{% endfor %}#}
-{#                                            {% if pagination.has_next %}#}
-{#                                <li class="next"><a href="{{url_for('book.pagination',page=pagination.next_num)}}">Next → </a></li>#}
-{#                                            {% endif %}#}
-{#                            </ul>#}
-{#                        </div>#}
-{#                    </div>#}
+                    <div class="span12 center">
+                        <div class="dataTables_paginate paging_bootstrap pagination">
+                            <ul>
+	                                            {% if pagination.has_prev %}
+                                <li class="prev disabled"><a href="{{url_for('book.pagination',page=pagination.prev_num)}}">← Previous</a></li>
+								{% endif %}
+								                            {% for i in pagination.iter_pages() %}
+                                <li class="active"><a href="{{url_for('book.pagination',page=i)}}">{{i}}</a></li>
+								{% endfor %}
+                                            {% if pagination.has_next %}
+                                <li class="next"><a href="{{url_for('book.pagination',page=pagination.next_num)}}">Next → </a></li>
+                                            {% endif %}
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
             </div>

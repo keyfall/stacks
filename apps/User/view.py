@@ -28,7 +28,7 @@ def login():
     user = user_result
     login_user(user, remember=True)
 
-    pagination = Book.query.filter_by(verify='0', logic_delete='0').paginate(1,10,error_out=False)
+    pagination = Book.query.filter_by(verify='0', logic_delete='0').order_by(Book.create_time.desc()).paginate(1,10,error_out=False)
     books = pagination.items
     context = {
         "books":books,

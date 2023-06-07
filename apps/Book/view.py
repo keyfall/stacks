@@ -1,11 +1,13 @@
 from flask import render_template,request,flash,url_for,redirect
 import re
 
+from flask_login import login_required, current_user
 from apps.Book import bp_book
 from utils.response import jsonify_response
 from .book import Book
 from utils.db import db
 import datetime
+import os
 
 @bp_book.route('/uu', methods=['GET', 'POST'])
 def ss():
@@ -42,16 +44,33 @@ def upload_book():
     # db.session.commit()
     return jsonify_response(msg="ok")
 
-@bp_book.route('/dele/<int:id>', methods=['POST'])
+@bp_book.route('/dele/<int:id>', methods=['GET','POST'])
+@login_required
 def del_book(id):
-    book = Book.get_or_404(id)
+    book = Book.query.get_or_404(id)
     if book:
         book.logic_delete = "1"
         db.session.commit()
         dst = book.book_url
-        try:
-            os.remove(dst)
-            print("File Deleted Successfully")
-        except OSError:
-            return jsonify_response(err=500, msg="File Not Found or Permission Denied")
+        #暂时不删除文件
+        # try:
+        #     if os.path.exists(dst):
+        #         os.remove(dst)
+        #     print("File Deleted Successfully")
+        # except OSError:
+        #     return jsonify_response(err=500, msg="File Not Found or Permission Denied")
         return jsonify_response()
+
+@bp_book.route('book_pagin/<int:page>')
+def pagination(page):
+    if(page==None):
+        page=1
+    pagination = Book.query.order_by(Book.create_time.desc()).paginate(page,10,error_out=False)
+    books=pagination.items
+    context = {
+        "books":books,
+        "uname":current_user.uname,
+        "pagination": pagination
+    }
+
+    return render_template("audit.html", **context)

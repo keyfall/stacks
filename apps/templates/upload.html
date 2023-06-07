@@ -157,6 +157,7 @@
 
             <div class="transfer-book-3 hide">
                 <p class="upload-success">文件上传成功，请在 APP 上提取</p>
+                <a id="back" href="javascript:;" class="change-book-btn">返回</a>
             </div>
         </div>
     </div>
@@ -164,6 +165,11 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
+
+    $("#back").click(function(){
+                    $(".transfer-book-1").removeClass('hide');
+                    $(".transfer-book-3").addClass('hide');
+    });
 
     function choosebook() {
         $('#change-book').click();
