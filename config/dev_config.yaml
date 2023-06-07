@@ -5,7 +5,7 @@ flask:
   JSON_AS_ASCII : False
   MAX_CONTENT_LENGTH : 20971520
   UPLOAD_FOLDER : e:\projects\stacks\books
-  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:@localhost:3306/stacks
+  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:zongming@localhost:3306/stacks
   SQLALCHEMY_TRACK_MODIFICATIONS : False
   SQLALCHEMY_COMMIT_ON_TEARDOWN : True
   SQLALCHEMY_ECHO : True
@@ -27,3 +27,9 @@ postgresql:
 whiteList:
   ip: 127.0.0.1
   path: /book,/user,/favicon.ico,/static
+
+# 是否重置数据库
+redb:
+  #0是不重置，1是L笔记本重置，2是家里重置
+  type: 0
+

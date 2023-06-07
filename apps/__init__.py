@@ -20,7 +20,8 @@ def create_app():
 
     #初始化数据库
     utils_db.db.init_app(app)
-
+    #重载数据库
+    utils_db.reload_database(app)
     #初始化蓝图
     init_bp(app)
 

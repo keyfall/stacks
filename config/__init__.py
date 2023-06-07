@@ -29,3 +29,6 @@ get_postgre_config = config["postgresql"]
 
 #白名单
 get_white_list = config["whiteList"]
+
+#是否重新导入数据库
+redb = config["redb"]
