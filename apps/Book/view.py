@@ -34,8 +34,15 @@ def upload_book():
          flash("错误的文件名称 '%s'".format(file_val.filename))
          # 这里不能使用jsonify，因为之前用的是ajax，所以使用flask无法显现，试试跳转和重定向，不行搜百度
          return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(file_val.filename))
+    # odst = "d:\\projects\\stacks\\books\\"
 
-    dst = "d:\\projects\\stacks\\books\\"+file_val.filename
+    #通过文件名验证是否存在
+    #后面和用户绑定后，当前用户下的文件不能重复
+
+    odst = "e:\\projects\\stacks\\books\\"
+    dst = odst+file_val.filename
+    if not os.path.exists(odst):
+        os.makedirs(odst)
     file_val.save(dst)
 
     book = Book(book_name=file_val.filename.split(".")[0],book_url=dst, create_time=datetime.date.today())
@@ -44,14 +51,14 @@ def upload_book():
     # db.session.commit()
     return jsonify_response(msg="ok")
 
-@bp_book.route('/dele/<int:id>', methods=['GET','POST'])
+@bp_book.route('/dele/<int:id>', methods=['POST'])
 @login_required
 def del_book(id):
     book = Book.query.get_or_404(id)
     if book:
         book.logic_delete = "1"
         db.session.commit()
-        dst = book.book_url
+        # dst = book.book_url
         #暂时不删除文件
         # try:
         #     if os.path.exists(dst):
@@ -59,6 +66,15 @@ def del_book(id):
         #     print("File Deleted Successfully")
         # except OSError:
         #     return jsonify_response(err=500, msg="File Not Found or Permission Denied")
+        return jsonify_response()
+
+@bp_book.route('/verify/<int:id>', methods=['POST'])
+@login_required
+def verify_book(id):
+    book = Book.query.get_or_404(id)
+    if book:
+        book.verify = "1"
+        db.session.commit()
         return jsonify_response()
 
 @bp_book.route('book_pagin/<int:page>')
