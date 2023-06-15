@@ -21,7 +21,7 @@ def request_loader(request):
 
     user = User.query.filter_by(uname=uname).first()
 
-    if user:
+    if not user:
         return 'Bad login'
 
     return user

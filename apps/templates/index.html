@@ -12,11 +12,22 @@
 <body>
     <div class="container">
         <div class="row height d-flex justify-content-center align-items-center">
+            <form action="{{ url_for('search_book') }}", method="POST">
             <div class="col-md-8">
-                <div class="search"> <i class="fa fa-search"></i> <input type="text" class="form-control" placeholder="请输入书名"> <button class="btn btn-primary">Search</button> </div>
+                <div class="search"> <i class="fa fa-search"></i> <input type="text" class="form-control" name="book_name" placeholder="请输入书名"> <button class="btn btn-primary">Search</button> </div>
             </div>
+                </form>
         </div>
     </div>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li class="{{ message[0] }}">{{ message[1] }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
 

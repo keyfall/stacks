@@ -9,9 +9,15 @@ from utils.db import db
 import datetime
 import os
 
-@bp_book.route('/uu', methods=['GET', 'POST'])
-def ss():
-    return render_template("index.html")
+@bp_book.route('/search_book/<string:book_name>', methods=['GET', 'POST'])
+def search_book(book_name):
+    if request.method == "GET":
+        return render_template("index.html")
+    books = Book.query.filter_by(book_name=book_name,verify='1',logic_delete='0').all()
+    if books:
+        return jsonify_response(data=books,code=200)
+    return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(book_name))
+
 
 def is_valid_filename(filename):
     pattern = r'^.+\.\w+$'
@@ -76,8 +82,10 @@ def verify_book(id):
         book.verify = "1"
         db.session.commit()
         return jsonify_response()
+    return jsonify_response(code=400,msg="没有此文件")
 
 @bp_book.route('book_pagin/<int:page>')
+@login_required
 def pagination(page):
     if(page==None):
         page=1
