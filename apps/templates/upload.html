@@ -5,7 +5,11 @@
     <meta name="keywords" content="epub,epub阅读器,在线epub阅读器,epub怎么打开,怎么打开epub,最好的epub阅读器">
     <meta name="description"
           content="Neat Reader提供体验绝佳的epub阅读体验，无需安装，无需下载，即开即用，可以帮你轻松打开任何epub文件。也许，它就是地球上最好用的epub阅读器！">
-
+    <!-- CSS -->
+<link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+<!-- jQuery and JavaScript Bundle with Popper -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha384-7ymO4nGrkm372HoSbq1OY2DP4pEZnMiA+E0F3zPr+JQQtQ82gQ1HPY3QIVtztVua" crossorigin="anonymous"></script>
 </head>
 <body>
 <style>
@@ -159,10 +163,21 @@
                 <p class="upload-success">文件上传成功，请在 APP 上提取</p>
                 <a id="back" href="javascript:;" class="change-book-btn">返回</a>
             </div>
+
         </div>
-    </div>
-    <div/>
+{#        <div class="progress">#}
+{#            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">#}
+{#                <span class="sr-only">0%</span>#}
+{#            </div>#}
+        <div class="progress">
+  <div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+      <span class="sr-only" style="overflow: visible;z-index: 111">0%</span>
+  </div>
+        </div>
 </div>
+        </div>
+
+
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 
@@ -177,7 +192,7 @@
     }
 
     $('#change-book').change(function (e) {
-        if ($('#change-book').value == "") {
+        if ($('#change-book').val() == "") {
             alert("请选择需要上传的文件");
             return;
         }
@@ -185,6 +200,17 @@
         var formdata = new FormData()
         formdata.append('file', e.target.files[0])
         $.ajax({
+
+                                xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.upload.addEventListener('progress', function(e) {
+                            if (e.lengthComputable) {
+                                var percent = Math.round((e.loaded / e.total) * 100);
+                                $('.progress-bar').attr('aria-valuenow', percent).css('width', percent + '%').find('span').text(percent + '%');
+                            }
+                        });
+                        return xhr;
+                    },
             type: "post",
             url: "/book/upload_book", //上传文件的请求路径必须是绝对路劲
             data: formdata,

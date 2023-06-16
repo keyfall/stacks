@@ -15,34 +15,39 @@
             <div class="col-md-8">
                 <div class="search"> <i class="fa fa-search"></i> <input type="text" id="book_name" class="form-control" placeholder="请输入书名"> <button id="submit-button" class="btn btn-primary">Search</button> </div>
             </div>
+
         </div>
+
     </div>
-    <script type="text/javascript">
-    $('#submit-button').click(function (e) {
-        if ($('#book_name').value == "") {
-            alert("请输入书名");
-            return;
-        }
-        $.ajax({
-            type: "post",
-            url: "/bood/search_book/"+$('#book_name').value(), //上传文件的请求路径必须是绝对路劲
-            success: function (data) {
-                console.log(data.code)
-                if (data.code == 400) {
-                    console.log(data.msg)
-                    alert("没有此文件")
-                }
-                if (data.code == 200) {
-
-
-                }
-            },
-            error: function () {
-                alert("上传失败");
-            },
-        });
-}
-    </script>
+                         <div class="col-md-8" style="color:red">
+                 <div style="height: 700px;background-color: green">ssssssssssssssssss</div>
+            </div>
+{#    <script type="text/javascript">#}
+{#    $('#submit-button').click(function (e) {#}
+{#        if ($('#book_name').val() == "") {#}
+{#            alert("请输入书名");#}
+{#            return;#}
+{#        }#}
+{#        $.ajax({#}
+{#            type: "post",#}
+{#            data:{'book_name': $('#book_name').val()},#}
+{#            url: "/book/search_book", //上传文件的请求路径必须是绝对路劲#}
+{#            success: function (data) {#}
+{#                console.log(data.code)#}
+{#                if (data.code == 400) {#}
+{#                    console.log(data.msg)#}
+{#                    alert("没有此文件")#}
+{#                }#}
+{#                if (data.code == 200) {#}
+{##}
+{#                }#}
+{#            },#}
+{#            error: function () {#}
+{#                alert("上传失败");#}
+{#            },#}
+{#        });#}
+{#})#}
+{#    </script>#}
 
 
     <style>

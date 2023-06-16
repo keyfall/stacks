@@ -6,9 +6,9 @@ flask:
   MAX_CONTENT_LENGTH : 20971520
   UPLOAD_FOLDER : e:\projects\stacks\books
   #笔记本的
-  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:zongming@localhost:3306/stacks
+#  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:zongming@localhost:3306/stacks
   #家里的
-#  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:@localhost:3306/stacks
+  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:@localhost:3306/stacks
   SQLALCHEMY_TRACK_MODIFICATIONS : False
   SQLALCHEMY_COMMIT_ON_TEARDOWN : True
   SQLALCHEMY_ECHO : True

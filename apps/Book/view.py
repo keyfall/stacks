@@ -9,10 +9,12 @@ from utils.db import db
 import datetime
 import os
 
-@bp_book.route('/search_book/<string:book_name>', methods=['GET', 'POST'])
-def search_book(book_name):
+@bp_book.route('/search_book', methods=['GET', 'POST'])
+def search_book():
     if request.method == "GET":
         return render_template("index.html")
+    book_name = request.form["book_name"]
+    print(book_name)
     books = Book.query.filter_by(book_name=book_name,verify='1',logic_delete='0').all()
     if books:
         return jsonify_response(data=books,code=200)
@@ -89,7 +91,7 @@ def verify_book(id):
 def pagination(page):
     if(page==None):
         page=1
-    pagination = Book.query.order_by(Book.create_time.desc()).paginate(page,10,error_out=False)
+    pagination = Book.query.filter_by(verify='0', logic_delete='0').order_by(Book.create_time.desc()).paginate(page,10,error_out=False)
     books=pagination.items
     context = {
         "books":books,
