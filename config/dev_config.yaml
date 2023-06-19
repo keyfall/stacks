@@ -3,7 +3,7 @@ flask:
   DEBUG: True
   PROPAGATE_EXCEPTIONS: False
   JSON_AS_ASCII : False
-  MAX_CONTENT_LENGTH : 20971520
+  MAX_CONTENT_LENGTH : 209715200
   UPLOAD_FOLDER : e:\projects\stacks\books
   #笔记本的
 #  SQLALCHEMY_DATABASE_URI : mysql+pymysql://root:zongming@localhost:3306/stacks

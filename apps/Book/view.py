@@ -8,16 +8,18 @@ from .book import Book
 from utils.db import db
 import datetime
 import os
+from sqlalchemy import and_
 
 @bp_book.route('/search_book', methods=['GET', 'POST'])
 def search_book():
     if request.method == "GET":
         return render_template("index.html")
     book_name = request.form["book_name"]
-    print(book_name)
-    books = Book.query.filter_by(book_name=book_name,verify='1',logic_delete='0').all()
+    books = Book.query.filter(and_(Book.book_name.like("%"+book_name+"%"), Book.verify=='1', Book.logic_delete=='0')).limit(4).all()
+    books_list = [book.__dict__ for book in books]
+    ids = [book.id for book in books]
     if books:
-        return jsonify_response(data=books,code=200)
+        return jsonify_response(data=books_list,code=200,ids=ids)
     return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(book_name))
 
 
@@ -42,22 +44,27 @@ def upload_book():
          flash("错误的文件名称 '%s'".format(file_val.filename))
          # 这里不能使用jsonify，因为之前用的是ajax，所以使用flask无法显现，试试跳转和重定向，不行搜百度
          return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(file_val.filename))
-    # odst = "d:\\projects\\stacks\\books\\"
+    # 这里需要修改
+    odst = "d:\\projects\\stacks\\books\\"
+    # odst = "e:\\projects\\stacks\\books\\"
 
     #通过文件名验证是否存在
     #后面和用户绑定后，当前用户下的文件不能重复
 
-    odst = "e:\\projects\\stacks\\books\\"
     dst = odst+file_val.filename
     if not os.path.exists(odst):
         os.makedirs(odst)
     file_val.save(dst)
 
-    book = Book(book_name=file_val.filename.split(".")[0],book_url=dst, create_time=datetime.date.today())
+    book = Book(book_name='.'.join(file_val.filename.split(".")[:-1]),book_url=dst, create_time=datetime.date.today())
+    print(file_val.filename.split(".")[0]+"  "+file_val.filename.split(".")[1])
     db.session.add(book)
     #需要把信息存到数据库中
     # db.session.commit()
-    return jsonify_response(msg="ok")
+    if len(file_val.filename)>13:
+        file_val.filename = file_val.filename[:12]+".."
+
+    return jsonify_response(msg=file_val.filename+"已上传成功")
 
 @bp_book.route('/dele/<int:id>', methods=['POST'])
 @login_required
@@ -89,7 +96,7 @@ def verify_book(id):
 @bp_book.route('book_pagin/<int:page>')
 @login_required
 def pagination(page):
-    if(page==None):
+    if page==None:
         page=1
     pagination = Book.query.filter_by(verify='0', logic_delete='0').order_by(Book.create_time.desc()).paginate(page,10,error_out=False)
     books=pagination.items
@@ -100,3 +107,14 @@ def pagination(page):
     }
 
     return render_template("audit.html", **context)
+
+@bp_book.route('download/<string:id>')
+def download(id):
+    if not id:
+        return jsonify_response(code=400, msg="id不能为空")
+
+    book = Book.query.filter_by(id=id).first()
+    if not book:
+        return jsonify_response(code=400,msg="沒有找到该书籍")
+    print(book)
+    return "ok"

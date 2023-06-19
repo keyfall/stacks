@@ -14,45 +14,58 @@
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-8">
                 <div class="search"> <i class="fa fa-search"></i> <input type="text" id="book_name" class="form-control" placeholder="请输入书名"> <button id="submit-button" class="btn btn-primary">Search</button> </div>
+                <div id="list-group">
+{#                   <ul class="list-group">#}
+  <a class="list-group-item list-group-item-action list-group-item-success d-none"></a>
+  <a class="list-group-item list-group-item-action list-group-item-warning d-none"></a>
+  <a class="list-group-item list-group-item-action list-group-item-info d-none"></a>
+  <a class="list-group-item list-group-item-action list-group-item-dark d-none"></a>
+{#</ul>#}
+                </div>
             </div>
 
         </div>
 
     </div>
-                         <div class="col-md-8" style="color:red">
-                 <div style="height: 700px;background-color: green">ssssssssssssssssss</div>
-            </div>
-{#    <script type="text/javascript">#}
-{#    $('#submit-button').click(function (e) {#}
-{#        if ($('#book_name').val() == "") {#}
-{#            alert("请输入书名");#}
-{#            return;#}
-{#        }#}
-{#        $.ajax({#}
-{#            type: "post",#}
-{#            data:{'book_name': $('#book_name').val()},#}
-{#            url: "/book/search_book", //上传文件的请求路径必须是绝对路劲#}
-{#            success: function (data) {#}
-{#                console.log(data.code)#}
-{#                if (data.code == 400) {#}
-{#                    console.log(data.msg)#}
-{#                    alert("没有此文件")#}
-{#                }#}
-{#                if (data.code == 200) {#}
-{##}
-{#                }#}
-{#            },#}
-{#            error: function () {#}
-{#                alert("上传失败");#}
-{#            },#}
-{#        });#}
-{#})#}
-{#    </script>#}
+    <script type="text/javascript">
+    $('#submit-button').click(function (e) {
+        if ($('#book_name').val() == "") {
+            alert("请输入书名");
+            return;
+        }
+        $.ajax({
+            type: "post",
+            data:{'book_name': $('#book_name').val()},
+            url: "/book/search_book", //上传文件的请求路径必须是绝对路劲
+            success: function (data) {
+                if (data.code == 400) {
+                    console.log(data.msg)
+                    alert("没有此文件")
+                }
+                if (data.code == 200) {
+                    $(".list-group").children().addClass('d-none')
+                    books_list = data.data
+                    ids = data.ids
+                    num = books_list.length
+                    console.log(ids)
+                    $.each(books_list,function(index, book){
+                        var url = '{{ url_for("book.download", id=book.id) }}';
+
+                        $("#list-group").children(":eq("+index+")").removeClass("d-none")
+                            .text(book.book_name).attr("href", url)
+                    })
+
+                }
+            },
+            error: function () {
+                alert("上传失败");
+            },
+        });
+})
+    </script>
 
 
     <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
-
         body {
             background-color: #eee;
             font-family: "Poppins", sans-serif;
@@ -60,7 +73,7 @@
         }
 
         .height {
-            height: 100vh
+            height: 100%
         }
 
         .search {
