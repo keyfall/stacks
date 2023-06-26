@@ -1,10 +1,8 @@
-from flask import request, jsonify, g
-
+from flask import request
+from flask_login import current_user
 from config import get_white_list
-# from utils.log import logger
 from utils.response import jsonify_response
 from utils.enums import APICODE
-# from manage import db
 
 
 white_ip_list = [] if get_white_list.get("ip") == None else get_white_list["ip"].split(",")
@@ -20,6 +18,8 @@ def before_request_hooks(app):
 
         if ip not in white_ip_list or '/'+path.split('/')[1] not in white_path_list:
             return jsonify_response(code=APICODE.FORBIDDEN, msg="禁止访问")
+
+        if not current_user.is_authenticated:
 
         # engine = db.engine
         # g.conn = engine.connect()

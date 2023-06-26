@@ -34,6 +34,7 @@ def is_valid_filename(filename):
     return re.match(pattern, filename)
 
 @bp_book.route('/upload_book', methods=['GET', 'POST'])
+@login_required
 def upload_book():
     if request.method == "GET":
         return render_template("upload.html")

@@ -4,7 +4,7 @@ from config import get_flask_config
 from utils import db as utils_db
 from utils import response as utils_response
 from utils.hooks import before_request_hooks, after_request_hooks
-from utils.login import *
+from utils.login import login_manager
 
 
 def init_bp(app):

@@ -1,16 +1,21 @@
 from apps.User import bp_user
 from flask import render_template, request, redirect
 from flask_login import login_user
-from utils.response import jsonify_response
+
+from utils.login_utils import require_names
 from .user import User
 from apps.Book.book import Book
 from utils.db import db
+from flask_login import login_required
 
-@bp_user.route('/login', methods=["GET", "POST"])
+
+@bp_user.route('/verify_book', methods=["GET", "POST"])
+@login_required
+@require_names('keyfall')
 def login():
     if request.method == 'GET':
         return '''
-                   <form action='/user/login' method='POST'>
+                   <form action='/user/verify_book' method='POST'>
                     <input type='text' name='uname' placeholder='uname'/>
                     <input type='password' name='password' id='password' placeholder='password'/>
                     <input type='submit' name='submit'/>
@@ -39,10 +44,12 @@ def login():
     return render_template("audit.html", **context)
 
 @bp_user.route('/create_user', methods=["GET", "POST"])
+@login_required
+@require_names('keyfall')
 def create():
     users = [
     User(uname="keyfall", upassword="zongming"),
-    User(uname="佚名", upassword="")
+    User(uname="佚名", upassword=""),
         ]
     db.session.add_all(users)
     db.session.commit()
