@@ -12,3 +12,4 @@ class Book(db.Model):
     #0为正常，1为删除
     logic_delete = db.Column(db.String(2), nullable=False, default="0")
     #后续要和作者对应,登录了用户，才能对应上传的书，否则书的上传者就是匿名
+    user_id = db.Column(db.Integer, db.ForeignKey('stacks_user.id'), nullable=False)
