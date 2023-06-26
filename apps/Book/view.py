@@ -1,4 +1,4 @@
-from flask import render_template,request,flash,url_for,redirect
+from flask import render_template,request,flash,send_file
 import re
 
 from flask_login import login_required, current_user
@@ -16,10 +16,12 @@ def search_book():
         return render_template("index.html")
     book_name = request.form["book_name"]
     books = Book.query.filter(and_(Book.book_name.like("%"+book_name+"%"), Book.verify=='1', Book.logic_delete=='0')).limit(4).all()
-    books_list = [book.__dict__ for book in books]
-    ids = [book.id for book in books]
+    # books_list = [book.__dict__ for book in books]
+    context = {
+        "books":books
+    }
     if books:
-        return jsonify_response(data=books_list,code=200,ids=ids)
+        return render_template("index.html", **context)
     return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(book_name))
 
 
@@ -116,5 +118,4 @@ def download(id):
     book = Book.query.filter_by(id=id).first()
     if not book:
         return jsonify_response(code=400,msg="沒有找到该书籍")
-    print(book)
-    return "ok"
+    return send_file(book.book_url,as_attachment=True,attachment_filename=book.book_name)

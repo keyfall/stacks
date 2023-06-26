@@ -13,57 +13,26 @@
     <div class="container">
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-8">
-                <div class="search"> <i class="fa fa-search"></i> <input type="text" id="book_name" class="form-control" placeholder="请输入书名"> <button id="submit-button" class="btn btn-primary">Search</button> </div>
+                <div class="search"> <i class="fa fa-search"></i>
+                    <form action="/book/search_book" method="post">
+                    <input type="text" name="book_name" class="form-control" placeholder="请输入书名">
+                    <button id="submit-button" type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                </div>
                 <div id="list-group">
-{#                   <ul class="list-group">#}
-  <a class="list-group-item list-group-item-action list-group-item-success d-none"></a>
-  <a class="list-group-item list-group-item-action list-group-item-warning d-none"></a>
-  <a class="list-group-item list-group-item-action list-group-item-info d-none"></a>
-  <a class="list-group-item list-group-item-action list-group-item-dark d-none"></a>
-{#</ul>#}
+        {% set my_list = ['list-group-item-success', 'list-group-item-warning', 'list-group-item-info', 'list-group-item-dark'] %}
+
+                    {% for book in books %}
+                   <ul class="list-group">
+  <a href="{{ url_for("book.download", id=book.id) }}" class="list-group-item list-group-item-action {{ my_list[loop.index] }}">{{book['book_name'] }}</a>
+                    {%  endfor %}
+</ul>
                 </div>
             </div>
 
         </div>
 
     </div>
-    <script type="text/javascript">
-    $('#submit-button').click(function (e) {
-        if ($('#book_name').val() == "") {
-            alert("请输入书名");
-            return;
-        }
-        $.ajax({
-            type: "post",
-            data:{'book_name': $('#book_name').val()},
-            url: "/book/search_book", //上传文件的请求路径必须是绝对路劲
-            success: function (data) {
-                if (data.code == 400) {
-                    console.log(data.msg)
-                    alert("没有此文件")
-                }
-                if (data.code == 200) {
-                    $(".list-group").children().addClass('d-none')
-                    books_list = data.data
-                    ids = data.ids
-                    num = books_list.length
-                    console.log(ids)
-                    $.each(books_list,function(index, book){
-                        var url = '{{ url_for("book.download", id=book.id) }}';
-
-                        $("#list-group").children(":eq("+index+")").removeClass("d-none")
-                            .text(book.book_name).attr("href", url)
-                    })
-
-                }
-            },
-            error: function () {
-                alert("上传失败");
-            },
-        });
-})
-    </script>
-
 
     <style>
         body {
