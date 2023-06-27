@@ -9,6 +9,7 @@ from utils.db import db
 import datetime
 import os
 from sqlalchemy import and_
+from utils.login_utils import require_names
 
 @bp_book.route('/search_book', methods=['GET', 'POST'])
 def search_book():
@@ -71,6 +72,7 @@ def upload_book():
 
 @bp_book.route('/dele/<int:id>', methods=['POST'])
 @login_required
+@require_names('keyfall')
 def del_book(id):
     book = Book.query.get_or_404(id)
     if book:
@@ -88,6 +90,7 @@ def del_book(id):
 
 @bp_book.route('/verify/<int:id>', methods=['POST'])
 @login_required
+@require_names('keyfall')
 def verify_book(id):
     book = Book.query.get_or_404(id)
     if book:
@@ -98,6 +101,7 @@ def verify_book(id):
 
 @bp_book.route('book_pagin/<int:page>')
 @login_required
+@require_names('keyfall')
 def pagination(page):
     if page==None:
         page=1

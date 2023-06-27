@@ -44,8 +44,6 @@ def login():
     return render_template("audit.html", **context)
 
 @bp_user.route('/create_user', methods=["GET", "POST"])
-@login_required
-@require_names('keyfall')
 def create():
     users = [
     User(uname="keyfall", upassword="zongming"),

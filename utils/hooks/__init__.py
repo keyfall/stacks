@@ -19,8 +19,6 @@ def before_request_hooks(app):
         if ip not in white_ip_list or '/'+path.split('/')[1] not in white_path_list:
             return jsonify_response(code=APICODE.FORBIDDEN, msg="禁止访问")
 
-        if not current_user.is_authenticated:
-
         # engine = db.engine
         # g.conn = engine.connect()
         # print("starting connection")
