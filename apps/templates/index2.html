@@ -5,6 +5,38 @@
     <title>Title</title>
 </head>
 <body>
-sdfsdfdsfds
+<style>
+    .container {
+  display: flex;
+  flex-direction: column;
+}
+
+.name-block,
+.file-block {
+  margin-bottom: 10px;
+}
+
+.name-block label,
+.file-block label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.name-block input,
+.file-block input {
+  width: 100%;
+}
+</style>
+<div class="container">
+  <div class="name-block">
+    <label for="name">姓名：</label>
+    <input type="text" id="name">
+  </div>
+  <div class="file-block">
+    <label for="file">传文件：</label>
+    <input type="file" id="file">
+  </div>
+</div>
+
 </body>
 </html>

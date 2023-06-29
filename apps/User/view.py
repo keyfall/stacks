@@ -1,26 +1,26 @@
 from apps.User import bp_user
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, url_for
 from flask_login import login_user
 
 from utils.login_utils import require_names
 from .user import User
 from apps.Book.book import Book
 from utils.db import db
-from flask_login import login_required
+from flask_login import login_required, logout_user
 
 
-@bp_user.route('/verify_book', methods=["GET", "POST"])
-@login_required
-@require_names('keyfall')
+@bp_user.route('/login', methods=["GET", "POST"])
+# @require_names('keyfall')
 def login():
     if request.method == 'GET':
         return '''
-                   <form action='/user/verify_book' method='POST'>
+                   <form action='/user/login' method='POST'>
                     <input type='text' name='uname' placeholder='uname'/>
                     <input type='password' name='password' id='password' placeholder='password'/>
                     <input type='submit' name='submit'/>
                    </form>
                    '''
+
 
     uname =  request.form['uname']
     password =  request.form['password']
@@ -32,6 +32,8 @@ def login():
 
     user = user_result
     login_user(user, remember=True)
+    if user.uname!='keyfall':
+        return render_template("upload.html", user = user)
 
     pagination = Book.query.filter_by(verify='0', logic_delete='0').order_by(Book.create_time.desc()).paginate(page=1,per_page=10,error_out=False)
     books = pagination.items
@@ -43,12 +45,20 @@ def login():
 
     return render_template("audit.html", **context)
 
+
+@bp_user.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('user.login'))
+
 @bp_user.route('/create_user', methods=["GET", "POST"])
 def create():
     users = [
     User(uname="keyfall", upassword="zongming"),
     User(uname="佚名", upassword=""),
-        ]
+    User(uname="test", upassword="test"),
+    ]
     db.session.add_all(users)
     db.session.commit()
     return "ok"

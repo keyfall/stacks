@@ -11,16 +11,18 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha384-7ymO4nGrkm372HoSbq1OY2DP4pEZnMiA+E0F3zPr+JQQtQ82gQ1HPY3QIVtztVua" crossorigin="anonymous"></script>
 </head>
-<body>
 <style>
-    body {
-        display: flex;
+
+    body{
+          display: flex;
+        flex-direction: column;
     }
 
     .transfer-book-container {
         min-height: 545px;
         background: #fff;
         margin: auto;
+        flex: 1;
     }
 
     .transfer-book-container .book-main {
@@ -146,8 +148,13 @@
 
 
 </style>
-
+    {% if user  %}
+    <div style="width:100px;height:30px;flex: 1">
+    {{ user.uname  }} <a href="{{url_for('user.logout')}}">注销</a>
+    </div>
+{% endif %}
 <div class="transfer-book-container container-fluid">
+
     <div class="book-main">
         <h2 class="transfer-book-title">欢迎使用『在线传书』功能</h2>
         <div class="change-transfer-book">
@@ -171,7 +178,6 @@
         </div>
 </div>
         </div>
-
 
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">

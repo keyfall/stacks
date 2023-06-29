@@ -2,16 +2,12 @@ from flask_login import LoginManager
 from apps.User.user import User
 
 
-class MyAnonymousUser(AnonymousUserMixin):
-    def __init__(self):
-        self.id = 0
-        self.uname = '佚名'
+
 
 login_manager = LoginManager()
 login_manager.login_view = "login"
 login_manager.login_message_category = "info"
 login_manager.login_message = "Access denied"
-login_manager.anonymous_user = MyAnonymousUser
 
 # 创建一个匿名用户类
 
