@@ -38,7 +38,8 @@ def is_valid_filename(filename):
 @login_required
 def upload_book():
     if request.method == "GET":
-        return render_template("upload.html")
+        print("user",current_user)
+        return render_template("upload.html",user=current_user)
     #只能在request.files里找文件，file是前端formdata中对应文件设置的key值，可以修改，后天也要修改，否则找不到
     #file_val里面的content_length,content_type都为空,我以为没有传成功，后来尝试保存，发现保存成功就好了
     file_val = request.files['file']

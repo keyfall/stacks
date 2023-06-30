@@ -50,13 +50,14 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-            <a class="brand" href="index.html"> <img alt="Charisma Logo" src="/apps/static/img/logo20.png">
+            <a class="brand" href="#"> <img alt="Charisma Logo" src="/apps/static/img/logo20.png">
                 <span>stacks</span></a>
 
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
-                <a class="btn dropdown-toggle" data-toggle="dropdown" href="{{ url_for('user.go_upload')}}">
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="icon-user"></i><span class="hidden-phone"> {{ uname }}</span>
+                    <a class="btn dropdown-toggle" href="{{url_for('user.logout')}}">注销</a>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="#">Profile</a></li>
@@ -106,7 +107,6 @@
                             <tr>
                                 <th>标题</th>
                                 <th>时间</th>
-                                <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -114,64 +114,12 @@
                             <tr>
                                 <td>{{book.book_name}}</td>
                                 <td class="center">{{book.create_time}}</td>
-                                <td class="center">
-                                    <a class="btn btn-warning" onclick="verify_book(this,{{ book.id }})"
-                                       href="javascript:void(0);">
-                                        <i class="icon-trash icon-white"></i>
-                                        Verify
-                                    </a>
-                                    <a class="btn btn-danger" onclick="del_book(this,{{ book.id }})"
-                                       href="javascript:void(0);">
-                                        <i class="icon-trash icon-white"></i>
-                                        Delete
-                                    </a>
-                                </td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 
-                        <script type="text/javascript">
-
-    function del_book(elem,id) {
-        $.ajax({
-            type: "post",
-            url: "/book/dele/"+id,
-            success: function (data) {
-                console.log(data.code)
-                if (data.code == 200) {
-                    $(elem).closest('tr').addClass('hide')
-                }
-                if (data.code == 500) {
-                    alert("删除错误")
-                }
-            },
-            error: function () {
-                alert("请求失败");
-            },
-        });
-    };
-function verify_book(elem,id) {
-        $.ajax({
-            type: "post",
-            url: "/book/verify/"+id,
-            success: function (data) {
-                console.log(data.code)
-                if (data.code == 200) {
-                    $(elem).closest('tr').addClass('hide')
-                }
-                if (data.code == 500) {
-                    alert("验证错误")
-                }
-            },
-            error: function () {
-                alert("请求失败");
-            },
-        });
-    };
-
-                        </script>
 
                         <div class="row-fluid">
                             <div class="span12">

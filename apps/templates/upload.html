@@ -14,20 +14,21 @@
 <style>
 
     body{
-          display: flex;
-        flex-direction: column;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
     }
 
     .transfer-book-container {
-        min-height: 545px;
         background: #fff;
         margin: auto;
-        flex: 1;
     }
 
     .transfer-book-container .book-main {
         width: 800px;
-        margin: 0 auto;
+        margin: auto;
     }
 
     .transfer-book-container .book-main .transfer-book-title {
@@ -149,8 +150,8 @@
 
 </style>
     {% if user  %}
-    <div style="width:100px;height:30px;flex: 1">
-    {{ user.uname  }} <a href="{{url_for('user.logout')}}">注销</a>
+    <div style="width:100%;height:30px; text-align:right">
+    hello,{{ user.uname  }}&nbsp; <a href="{{url_for('user.logout')}}">注销</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     </div>
 {% endif %}
 <div class="transfer-book-container container-fluid">
@@ -177,8 +178,6 @@
   </div>
         </div>
 </div>
-        </div>
-
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
 

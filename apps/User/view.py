@@ -10,7 +10,6 @@ from flask_login import login_required, logout_user
 
 
 @bp_user.route('/login', methods=["GET", "POST"])
-# @require_names('keyfall')
 def login():
     if request.method == 'GET':
         return '''
@@ -32,18 +31,31 @@ def login():
 
     user = user_result
     login_user(user, remember=True)
-    if user.uname!='keyfall':
+    if user.uname=='佚名' :
         return render_template("upload.html", user = user)
 
-    pagination = Book.query.filter_by(verify='0', logic_delete='0').order_by(Book.create_time.desc()).paginate(page=1,per_page=10,error_out=False)
+
+    if user.uname!='keyfall' :
+        context = searchbooks('1', '0', uname, user.id)
+        return render_template("show_books.html", **context)
+
+    context = searchbooks('0','0',uname, user.id)
+    return render_template("audit.html", **context)
+
+@login_required
+def searchbooks(verify,logic_delete,uname, uid):
+    if uid=='1':
+        pagination = Book.query.filter_by(verify=verify, logic_delete=logic_delete).order_by(
+            Book.create_time.desc()).paginate(page=1, per_page=10, error_out=False)
+    else:
+        pagination = Book.query.filter_by(verify=verify, logic_delete=logic_delete, user_id=uid).order_by(Book.create_time.desc()).paginate(page=1,per_page=10,error_out=False)
     books = pagination.items
     context = {
         "books":books,
         "uname":uname,
         "pagination": pagination
     }
-
-    return render_template("audit.html", **context)
+    return context
 
 
 @bp_user.route('/logout')
@@ -51,6 +63,13 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('user.login'))
+
+@bp_user.route('/go_upload')
+@login_required
+@require_names(("keyfall"))
+def go_upload():
+    context = searchbooks('1', '0', 'keyfall', '1')
+    return render_template("show_books.html", **context)
 
 @bp_user.route('/create_user', methods=["GET", "POST"])
 def create():
