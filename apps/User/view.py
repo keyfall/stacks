@@ -12,13 +12,7 @@ from flask_login import login_required, logout_user
 @bp_user.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == 'GET':
-        return '''
-                   <form action='/user/login' method='POST'>
-                    <input type='text' name='uname' placeholder='uname'/>
-                    <input type='password' name='password' id='password' placeholder='password'/>
-                    <input type='submit' name='submit'/>
-                   </form>
-                   '''
+        return render_template("login.html")
 
 
     uname =  request.form['uname']
