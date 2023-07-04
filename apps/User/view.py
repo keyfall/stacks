@@ -44,7 +44,7 @@ def login():
 
 @login_required
 def searchbooks(verify,logic_delete,uname, uid):
-    if uid=='1':
+    if uid == 1:
         pagination = Book.query.filter_by(verify=verify, logic_delete=logic_delete).order_by(
             Book.create_time.desc()).paginate(page=1, per_page=10, error_out=False)
     else:

@@ -50,8 +50,8 @@ def upload_book():
          # 这里不能使用jsonify，因为之前用的是ajax，所以使用flask无法显现，试试跳转和重定向，不行搜百度
          return jsonify_response(code=400, msg="错误的文件名称 '{}'".format(file_val.filename))
     # 这里需要修改
-    odst = "d:\\projects\\stacks\\books\\"
-    # odst = "e:\\projects\\stacks\\books\\"
+    # odst = "d:\\projects\\stacks\\books\\"
+    odst = "e:\\projects\\stacks\\books\\"
 
     #通过文件名验证是否存在
     #后面和用户绑定后，当前用户下的文件不能重复
@@ -61,7 +61,7 @@ def upload_book():
         os.makedirs(odst)
     file_val.save(dst)
 
-    book = Book(book_name='.'.join(file_val.filename.split(".")[:-1]),book_url=dst, create_time=datetime.date.today())
+    book = Book(user_id=current_user.id, book_name='.'.join(file_val.filename.split(".")[:-1]),book_url=dst, create_time=datetime.date.today())
     print(file_val.filename.split(".")[0]+"  "+file_val.filename.split(".")[1])
     db.session.add(book)
     #需要把信息存到数据库中
@@ -124,4 +124,4 @@ def download(id):
     book = Book.query.filter_by(id=id).first()
     if not book:
         return jsonify_response(code=400,msg="沒有找到该书籍")
-    return send_file(book.book_url,as_attachment=True,attachment_filename=book.book_name)
+    return send_file(book.book_url, as_attachment=True)

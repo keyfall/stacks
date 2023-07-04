@@ -1,0 +1,109 @@
+HBase是Hadoop Database的简称
+
+HBase是一个高可靠性,高性能，面向列，可伸缩的分布式存储系统，可以进行大规模结构化存储集群
+是一个适合于非结构化数据存储的数据库，HBase基于列的而不是基于行的模式
+可以进行实时读写，或者随机访问大规模的数据集
+可以提供实时计算，数据保存在HDFS分布式文件系统上
+
+HBase上的数据是以StoreFile(HFile)二进制流的形式存储在HDFS上block上，HDFS不知道HBase存储了什么，只知道是二进制文件，就是说HBase的存储数据对于HDFS是透明的
+
+HDFS适于存储大容量文件的分布式文件系统，HBase是建立在HDFS之上的数据库
+HDFS不支持快速单独记录查找,HBase提供在较大的表快速查找
+hdfs提供了高延迟批量处理，hbase提供了数十亿条记录低延迟访问单个行记录(随机存取)
+hdfs提供的数据只能顺序访问,hbase内部使用哈希表和提供随机接入,并且其存储索引，可将在HDFS文件中的数据进行快速查找
+
+
+HBase数据模型
+HBase通过表格的模式存储数据，每个表格由列和行组成，每个列由被划分为多个列族
+
+HBase架构
+	client:包含访问HBase的接口,并维护cache来加快对HBase的访问
+	zookeeper:HBase依赖Zookeeper,默认情况下HBase管理Zookeeper实例，Master和RegionServers启动时会向Zookeeper注册
+		 保证任何时候集群中只有一个master
+		 存错所有Region的寻址入口
+		实时监控Region server的上线和下线信息,并实时通知给master
+		存储HBase的schema和table元数据
+	HRegionServer:用来维护master分配给他的region,处理region的io请求，负责切分正在运行过程中变的过大的region
+	HRegion:hbase在行的方向上分割为多个region,region是hbase中分布式存储和负载均衡的最小单元,不同的region可以分别在不同的region server上，每个表一般只有一个region，一个region可以有多个列族，如果region的某个列族达到一个阈值(默认256M)时就会分成2个新的region
+	Store:每一个region由一个或多个Store组成,一起访问的数据会被hbase放在一个store中，即每一个ColumnFamily有一个Sotre
+	          一个store由一个memstore和0或者多个storefile组成，store的大小被Hbase用来判断是否需要切分region
+	storefile:memstore内存中的数据写到文件后就是storefile，storefile底层是以hfile的格式保存
+	HLog：HLog记录数据的所有变更，可以用来恢复文件，一旦region server宕机，就可以从log中进行恢复
+	LogFlusher：用来调用HLog.optionalSync()的一个类
+
+
+
+hbase写流程：
+1.获取juc的读取锁(java.util.concurrent.locks.lock),保证读写分离
+2.更新时间戳，保证时间戳存在
+3.在内存构建wal
+4.追加数据到wal，不写到hdfs中
+5.写到memstore内存中
+6.释放锁
+7.同步(设置一个flag为false)
+8.写入hdfs(写入hdfs前会进行flag判断，如果flag为true，就说明前面的错误了，数据不对，那么就会回滚cell操作)
+
+
+
+flush流程：
+从region内存的memstore刷新flush到hdfs硬盘中,大小和时间两个方面触发
+hbase-default.xml：
+hbase.regionserver.global.memstore.size，regionServer的全部memstore的大小的限定值，默认值是堆大小的40%
+hbase.regionserver.global.memstore.size.lower.limit,一个安全的值，就像额定电压一样，上面那个是最高电压，有时候写负载太高了，到达最高值时还在写，所以安全起见
+设置了一个安全值，默认值是上面的值95%
+hbase.regionserver.optionalcacheflushinterval，默认刷新时间为1个小时，最后一次编辑开始计时，到1个小时就刷新
+hbase.hregion.memstore.flush.size，单个region中的所有memstore的刷新大小，默认是128m
+hbase.regionserver.max.logs，regionserver中的wal log的数量超过默认值32,就会刷新，这个已经不能被使用者修改了，是默认值
+hbase.regionserver.hlog.blocksize，wal log的大小，默认值是128m
+
+读数据流程：
+client到zk获取meta表信息位置，收取到响应后，去对应的regionserver获取meta表，收到meta表，通过meta表找到目标数据的位置(Region Server信息，region信息)，并将对应信息匹配存到meta cache,
+然后去regionserver访问数据,分别在block cache(读缓存),memstore和store file(hfile)中查询目标数据，将所有数据合并（不同版本或者不同类型）
+将从文件中查询到的数据块缓存到Block cache
+最后将合并结果返回给客户端
+
+
+storefile合并：文件多了，会自动合并，也可以手动合并compact
+minor compaction:相邻的，小的file合并成大的file，不进行物理删除过期的
+major compaction:将一个store下的所有file合并成一个大文件,会进行物理删除操作
+
+hbase.hregion.majorcompaction，region进行major compaction合并的周期，默认是7天，一般会耗资源，而且时间不好掌控所以关闭，服务器闲的时候手动进行major compaction
+hbase.hstore.compactionThreshold,一个store里面允许存在的file个数，默认是3,如果大于等于3就会合并为一个file
+
+
+数据真正删除时间：
+确定两个基本，flush删除内存中的，就是memstore, major compaction删除硬盘上的file
+flush实例：
+比如put两次，一次新增，一次修改，然后再进行flush，scan之后你会看见只有一个修改后的值，这是因为新增和修改都是在memstore时进行的，所以flush之后就会删掉老版本
+再一次新增，flush后进行一次修改，scan之后会看见新增和修改的数据，因为新增flush之后新增的数据到了file，再进行修改，是在memstore，不跟file有关联了，所以会出现2个
+
+major compaction时会进行合并，把过时的版本删掉，只留最新版本
+如果进行了delete操作，那么也会一直留着，delete标记只会在major compaction的时候进行删除
+因为如果delete标记在flush时进行删除，那么在合并的时候，如果其他文件里有老版本的需要删除的信息，那么就不会被删掉了
+
+
+Split流程：storefile文件太大了就会进行切分，切分regionid，不会切分列族
+hbase.hregion.max.filesize,storefile最大的大小，默认是10G
+当一个region中的某个store下所有的storefile的总大小超过min(r^2*hbase.region.memstore.flush.size(128m)，hbase.hregion.max.filesize.storefile)
+r为当前region server中属于该table的region个数
+
+
+尽量使用同一列族，以防数据倾斜，导致flush的时候生成很多个小文件
+
+
+
+
+
+
+
+
+
+regionserver,master分别DDL和DML
+describe 表 参数详解
+WAL
+
+
+
+
+
+
