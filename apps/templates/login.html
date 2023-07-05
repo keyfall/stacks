@@ -83,7 +83,17 @@
 						 	    <div class="form-group col-lg-12">
 						 		    <button type="submit" class="btn btn-primary btn-block" id="login-btn">登录</button>
 								    <button type="button" class="btn btn-default btn-block" data-toggle = "modal" data-target="#registry">注册</button>
-						 	    </div>
+
+						 	    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <p  style="text-align: center;color: deeppink" class="{{ message[1] }}">{{ message[0] }}</p>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+                                </div>
 						 	</form>
 						 	<div class="login-help">
 						 		<a href="#">忘记密码？</a>
@@ -118,11 +128,11 @@
 					</div>
 					<div class="modal-body">
 						<div class="container">
-							<form class="form-horizontal" id="en-form" action="" method="post">
+							<form class="form-horizontal" id="en-form" action='/user/enroll' method='POST'>
 							<div class="form-group">
 						 	    <label for="en-username" class="col-lg-1 col-md-2 col-sm-2 control-label">账号：</label>
 						 	    <div class="col-lg-4 col-md-5 col-sm-7">
-						 	        <input type="text" class="form-control" name="usrname" id="en-username" required="required" />
+						 	        <input type="text" class="form-control" name="uname" id="en-username" required="required" />
 						 	        <p class="help-block hint_0_default default caution">6~18个字符，可使用字母、数字、下划线，需以字母开头</p>
 						 			<p class="help-block hint_0_warning glyphicon glyphicon-exclamation-sign" style="color: red;">账号输入不正确</p>
 						 			<p class="help-block hint_0_succeed glyphicon glyphicon-ok-sign" style="color: green;">账号可用</p>
@@ -149,7 +159,7 @@
 						 	<div class="form-group">
 						 		<label for="telephone" class="col-lg-1 col-md-2 col-sm-2 control-label">邮箱：</label>
 						 		<div class="col-lg-4 col-md-5 col-sm-7">
-						 			<input type="tel" class="form-control" name="telephone" id="telephone" />
+						 			<input type="tel" class="form-control" name="email" id="telephone" />
 						 			<p class="help-block hint_3_default default caution">忘记密码时，可通过该邮箱快速找回密码</p>
 						 			<p class="help-block hint_3_warning glyphicon glyphicon-exclamation-sign" style="color: red;">请填写正确的邮箱号！</p>
 						 			<p class="help-block hint_3_succeed glyphicon glyphicon-ok-sign" style="color: green;">邮箱号可用</p>

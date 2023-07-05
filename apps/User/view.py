@@ -1,5 +1,5 @@
 from apps.User import bp_user
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user
 
 from utils.login_utils import require_names
@@ -75,3 +75,15 @@ def create():
     db.session.add_all(users)
     db.session.commit()
     return "ok"
+
+
+@bp_user.route('/enroll', methods=["GET", "POST"])
+def enroll():
+    uname =  request.form['uname']
+    password =  request.form['password']
+    email =  request.form['email']
+    user = User(uname=uname, upassword=password,email=email)
+    db.session.add(user)
+    flash('已注册成功', 'success')
+
+    return render_template('login.html')
