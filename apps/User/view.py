@@ -28,10 +28,6 @@ def login():
 
     #
     remember = True if request.form.get('remember') else False
-    if remember:
-        resp = make_response(redirect('/'))
-        resp.set_cookie('user', user, max_age=30 * 24 * 60 * 60)  # 设置Cookie过期时间为30天
-        return resp
 
     if user.uname=='佚名' :
         return render_template("upload.html", user = user)
