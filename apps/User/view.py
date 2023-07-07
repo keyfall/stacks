@@ -1,5 +1,5 @@
 from apps.User import bp_user
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, make_response
 from flask_login import login_user
 
 from utils.login_utils import require_names
@@ -25,6 +25,14 @@ def login():
 
     user = user_result
     login_user(user, remember=True)
+
+    #
+    remember = True if request.form.get('remember') else False
+    if remember:
+        resp = make_response(redirect('/'))
+        resp.set_cookie('user', user, max_age=30 * 24 * 60 * 60)  # 设置Cookie过期时间为30天
+        return resp
+
     if user.uname=='佚名' :
         return render_template("upload.html", user = user)
 
@@ -84,6 +92,6 @@ def enroll():
     email =  request.form['email']
     user = User(uname=uname, upassword=password,email=email)
     db.session.add(user)
-    flash('已注册成功', 'success')
+    flash(["已注册成功", "success"])
 
     return render_template('login.html')
