@@ -1,12 +1,11 @@
 from apps.User import bp_user
 from flask import render_template, request, redirect, url_for, flash, make_response
-from flask_login import login_user
 
 from utils.login_utils import require_names
 from .user import User
 from apps.Book.book import Book
 from utils.db import db
-from flask_login import login_required, logout_user
+from flask_login import login_required, logout_user,login_user, current_user
 
 
 @bp_user.route('/login', methods=["GET", "POST"])
@@ -91,3 +90,18 @@ def enroll():
     flash(["已注册成功", "success"])
 
     return render_template('login.html')
+
+@bp_user.route('/update_password', methods=["GET", "POST"])
+@login_required
+def update_password():
+    if request.method == 'GET':
+        return render_template('update_password.html',user=current_user)
+    if current_user.uname=='佚名':
+        return render_template("upload.html", user = current_user)
+    password =  request.form['password']
+    email =  request.form['email']
+    user=current_user
+    user.upassword = password
+    user.email = email
+    db.session.add(user)
+    return render_template("login.html")

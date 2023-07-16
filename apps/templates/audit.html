@@ -16,6 +16,8 @@
 
     </style>
     <!-- 这里static可能找不到， 把static文件夹放到和后台生成Flask(__name__)同一个位置下(templates文件夹也是这样)-->
+
+
     <link href="{{url_for('static', filename='css/bootstrap-cerulean.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{url_for('static', filename='css/kudaompq.css')}}">
     <link href="{{url_for('static', filename='css/bootstrap-responsive.css')}}" rel="stylesheet">
@@ -34,8 +36,8 @@
     <link href="{{url_for('static', filename='css/jquery.iphone.toggle.css')}}" rel='stylesheet'>
     <link href="{{url_for('static', filename='css/opa-icons.css')}}" rel='stylesheet'>
     <link href="{{url_for('static', filename='css/uploadify.css')}}" rel='stylesheet'>
-    <link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico')}}">
     <script src="{{url_for('static', filename='js/jquery-1.7.2.min.js')}}"></script>
+    <link rel="shortcut icon" href="{{url_for('static', filename='img/favicon.ico')}}">
 
 </head>
 
