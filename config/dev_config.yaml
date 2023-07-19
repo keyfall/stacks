@@ -31,7 +31,7 @@ postgresql:
 
 whiteList:
   ip: 127.0.0.1, 192.168.1.103
-  path: /book,/user,/favicon.ico,/static
+  path: /book,/user,/favicon.ico,/static,/
 
 # 是否重置数据库
 redb:

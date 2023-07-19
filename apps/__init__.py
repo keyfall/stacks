@@ -1,5 +1,5 @@
-from flask import Flask
-
+from flask import Flask, render_template
+from flask_login import current_user
 from config import get_flask_config
 from utils import db as utils_db
 from utils import response as utils_response
@@ -13,6 +13,10 @@ def init_bp(app):
 
     app.register_blueprint(bp_book, url_prefix="/book")
     app.register_blueprint(bp_user, url_prefix="/user")
+
+    @app.route('/')
+    def index():
+        return render_template('upload.html',user=current_user)
 
 def create_app():
     app = Flask(__name__)

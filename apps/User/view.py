@@ -7,6 +7,12 @@ from apps.Book.book import Book
 from utils.db import db
 from flask_login import login_required, logout_user,login_user, current_user
 
+@bp_user.route('/logout',methods=["GET"])
+@login_required
+def logout():
+    logout_user()
+    return render_template("login.html")
+
 
 @bp_user.route('/login', methods=["GET", "POST"])
 def login():
@@ -55,11 +61,7 @@ def searchbooks(verify,logic_delete,uname, uid):
     return context
 
 
-@bp_user.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect(url_for('user.login'))
+
 
 @bp_user.route('/go_upload')
 @login_required
