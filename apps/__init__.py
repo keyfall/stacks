@@ -16,7 +16,7 @@ def init_bp(app):
 
     @app.route('/')
     def index():
-        return render_template('upload.html',user=current_user)
+        return render_template('index.html',user=current_user)
 
 def create_app():
     app = Flask(__name__)
